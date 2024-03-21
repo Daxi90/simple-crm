@@ -1,4 +1,26 @@
-<p>user works!</p>
+<mat-card>
+    <mat-card-content>
+        <table class="user-table">
+            <tr>
+                <th>Name</th>
+                <th>E-Mail</th>
+                <th>City</th>
+            </tr>
+
+            @for(user of allUsers; track user.id){
+                <tr [routerLink]="['/user', user.id]">
+                    <td>{{user.firstName}} {{user.lastName}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.street}}</td>
+                    <td>{{user.city}}</td>
+                </tr>
+            }
+
+
+        </table>
+    </mat-card-content>
+  </mat-card>
+  
 
 <button (click)="openDialog()" class="add-user-btn" mat-fab color="primary" matTooltip="Add user"  >
     <mat-icon>add</mat-icon>
