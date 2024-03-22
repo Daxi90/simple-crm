@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { Firestore, setDoc, doc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-dialog-edit-address',
@@ -37,11 +38,31 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 })
 export class DialogEditAddressComponent {
   dialogRef = inject(MatDialogRef<DialogEditAddressComponent>);
+  firestore: Firestore = inject(Firestore);
 
   user: User = new User();
   loading: boolean = false;
 
   saveUser() {
-    console.log('Speichern');
+    console.log(this.user);
+    if (this.user.id) {
+      // Stelle sicher, dass `id` nicht `undefined` ist
+      try {
+        this.loading = true;
+        this.updateUser(this.user.id, this.user).then(() => {
+          this.dialogRef.close();
+          this.loading = false;
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      console.error('User ID is undefined');
+      // Behandle den Fall, dass die ID undefined ist (z.B. Benutzer informieren)
+    }
+  }
+
+  async updateUser(userId: string, user: User) {
+    await setDoc(doc(this.firestore, 'user', userId), user.toJSON());
   }
 }

@@ -31,6 +31,19 @@ export class User{
         }
     }
 
+    public saveToJSON(){
+        return{
+            id: this.id,
+            firstName: this.firstName,
+            lastName: this.lastName,
+            email: this.email,
+            birthDate: this.birthDate,
+            street: this.street,
+            zipCode: this.zipCode,
+            city: this.city,
+        }
+    }
+
     static fireStoreDocToUser(doc: any): User {
         return new User({
           ...doc.data(),
